@@ -49,19 +49,12 @@ void loop() {
     toggle = !toggle;
     delay(300);
     
-    if(toggle == 0){
+    if(toggle == 0 && a<7){
       Serial.println(a);
-      if(a<7){
-        In1State = HIGH; In2State = LOW; spin_speed = 255;
-        digitalWrite(drive1A, LOW);  
-        digitalWrite(drive2A, LOW); 
-        analogWrite(ena1,0);
-      }else{
-        In1State = HIGH; In2State = LOW; spin_speed = 255;
-        digitalWrite(drive1A, In1State);  
-        digitalWrite(drive2A,In2State); 
-        analogWrite(ena1,255);
-      }
+      In1State = HIGH; In2State = LOW; spin_speed = 255;
+      digitalWrite(drive1A, In1State);  
+      digitalWrite(drive2A,In2State); 
+      analogWrite(ena1,spin_speed);
 
       for(pos = 0; pos <=180; pos += 1){
         myservo.write(pos);
