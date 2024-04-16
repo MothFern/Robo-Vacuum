@@ -53,8 +53,8 @@ void loop() {
       Serial.println(a);
       if(a<7){
         In1State = HIGH; In2State = LOW; spin_speed = 255;
-        digitalWrite(drive1A, 255);  
-        digitalWrite(drive2A,255); 
+        digitalWrite(drive1A, LOW);  
+        digitalWrite(drive2A, LOW); 
         analogWrite(ena1,0);
       }else{
         In1State = HIGH; In2State = LOW; spin_speed = 255;
