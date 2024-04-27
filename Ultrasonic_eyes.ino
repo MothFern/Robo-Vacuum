@@ -4,8 +4,8 @@ Servo myservo;
 
 int pos = 0;
 
-#define TRIG_PIN 12
-#define ECHO_PIN 11
+#define TRIG_PIN 4
+#define ECHO_PIN 5
 #define TRIG_PIN2 7
 #define ECHO_PIN2 6
 
@@ -15,6 +15,11 @@ int current_distance = 0;
 long a;
 long b;
 
+int greatest_distance = 0;
+int go_angle = 0;
+int previous_distance = 0;
+
+
 void setup() {
   myservo.attach(9);
   Serial.begin(9600);
@@ -22,38 +27,47 @@ void setup() {
 }
 
 void loop() {
-  for(pos = 0;pos <= 180; pos+=1){
+  greatest_distance = 0;
+  go_angle = 0;
+  previous_distance = 0;
+  for(pos = 0;pos <= 180; pos+=2){
     myservo.write(pos);
-    delay(20);
+    delay(15);
     a = sensor_one.Distance();
     b = sensor_two.Distance();
-    if(a < 7.62){
-      current_distance = a;
-      Serial.println("Ahh I hit a wall!");
-    }else if(b< 7.62){
-      if(current_distance > b){
-        current_distance = b;
-        Serial.println("Ahh I hit a wall!");
-      }
+    if(a > greatest_distance){
+      greatest_distance = a;
+      go_angle = pos;
     }else{
-      Serial.println("Kuska I will find you! ");
+      previous_distance = a;
     }
-  }
-  for(pos = 180; pos >=0; pos-=1){
+    if(b > greatest_distance){
+      greatest_distance = b;
+      go_angle = pos;
+    }else{
+      previous_distance = b;
+    }
+    }
+  for(pos = 180; pos>=0; pos-=2){
     myservo.write(pos);
-    delay(20);
+    delay(15);
     a = sensor_one.Distance();
     b = sensor_two.Distance();
-    if(a < 7.62){
-      current_distance = a;
-      Serial.println("Ahh I hit a wall!");
-    }else if(b< 7.62){
-      if(current_distance > b){
-        current_distance = b;
-        Serial.println("Ahh I hit a wall!");
-      }
+    if(a > greatest_distance){
+      greatest_distance = a;
+      go_angle = pos;
     }else{
-      Serial.println("Kuska I will find you! ");
+      previous_distance = a;
+    }
+    if(b > greatest_distance){
+      greatest_distance = b;
+      go_angle = pos;
+    }else{
+      previous_distance = b;
     }
   }
+  Serial.println("The go_angle is: ");
+  Serial.print(go_angle);
+  Serial.print(",");
+  Serial.println(greatest_distance);
 }
