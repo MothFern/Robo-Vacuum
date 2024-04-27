@@ -1,2 +1,2 @@
-# Open Vaccuum
+# Open Vacuum
 Arduino Final Project
